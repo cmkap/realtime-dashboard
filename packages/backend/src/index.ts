@@ -1,55 +1,78 @@
-import express from "express";
-import { WebSocketServer } from "ws";
-import fetch from "node-fetch";
-import type { DataPoint, RegionStats } from "@realtime/shared";
+import express from 'express'
+import { WebSocketServer } from 'ws'
+import fetch from 'node-fetch'
+import type { DataPoint, RegionStats } from '@realtime/shared'
 
-const app = express();
-const port = process.env.PORT || 3000;
+const app = express()
+const port = process.env.PORT || 3000
 
 const endpoints = [
-  { host: "https://data--us-east.upscope.io/status?stats=1", region: "us-east" },
-  { host: "https://data--eu-west.upscope.io/status?stats=1", region: "eu-west" },
-  { host: "https://data--eu-central.upscope.io/status?stats=1", region: "eu-central" },
-  { host: "https://data--us-west.upscope.io/status?stats=1", region: "us-west" },
-  { host: "https://data--sa-east.upscope.io/status?stats=1", region: "sa-east" },
-  { host: "https://data--ap-southeast.upscope.io/status?stats=1", region: "ap-southeast" },
-];
+  {
+    host: 'https://data--us-east.upscope.io/status?stats=1',
+    region: 'us-east',
+  },
+  {
+    host: 'https://data--eu-west.upscope.io/status?stats=1',
+    region: 'eu-west',
+  },
+  {
+    host: 'https://data--eu-central.upscope.io/status?stats=1',
+    region: 'eu-central',
+  },
+  {
+    host: 'https://data--us-west.upscope.io/status?stats=1',
+    region: 'us-west',
+  },
+  {
+    host: 'https://data--sa-east.upscope.io/status?stats=1',
+    region: 'sa-east',
+  },
+  {
+    host: 'https://data--ap-southeast.upscope.io/status?stats=1',
+    region: 'ap-southeast',
+  },
+]
 
-const regions: RegionStats[] = [];
+const regions: RegionStats[] = []
 
 function calculateSummary(dataPoints: DataPoint[]) {
-  const count = dataPoints.length || 1;
+  const count = dataPoints.length || 1
   return {
     avgCpuLoad: dataPoints.reduce((sum, p) => sum + p.cpuLoad, 0) / count,
     avgWaitTime: dataPoints.reduce((sum, p) => sum + p.waitTime, 0) / count,
-    avgActiveConnections: dataPoints.reduce((sum, p) => sum + p.activeConnections, 0) / count,
-  };
+    avgActiveConnections:
+      dataPoints.reduce((sum, p) => sum + p.activeConnections, 0) / count,
+  }
 }
 
 function updateRegionStats(region: string, point: DataPoint) {
-  let regionEntry = regions.find(r => r.region === region);
+  let regionEntry = regions.find((r) => r.region === region)
   if (!regionEntry) {
-    regionEntry = { region, dataPoints: [], summary: { avgCpuLoad: 0, avgWaitTime: 0, avgActiveConnections: 0 } };
-    regions.push(regionEntry);
+    regionEntry = {
+      region,
+      dataPoints: [],
+      summary: { avgCpuLoad: 0, avgWaitTime: 0, avgActiveConnections: 0 },
+    }
+    regions.push(regionEntry)
   }
 
-  regionEntry.dataPoints.push(point);
+  regionEntry.dataPoints.push(point)
 
   if (regionEntry.dataPoints.length > 50) {
-    regionEntry.dataPoints.shift();
+    regionEntry.dataPoints.shift()
   }
 
-  regionEntry.summary = calculateSummary(regionEntry.dataPoints);
+  regionEntry.summary = calculateSummary(regionEntry.dataPoints)
 }
 
 const server = app.listen(port, () => {
-  console.log(`Server listening on http://localhost:${port}`);
-});
+  console.log(`Server listening on http://localhost:${port}`)
+})
 
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ server })
 
 function extractMetrics(json: any, region: string): DataPoint {
-  const now = new Date().toISOString();
+  const now = new Date().toISOString()
 
   return {
     timestamp: now,
@@ -62,21 +85,21 @@ function extractMetrics(json: any, region: string): DataPoint {
     timers: json?.results?.stats?.server?.timers ?? 0,
     redisUp: json?.results?.services?.redis ?? false,
     databaseUp: json?.results?.services?.database ?? false,
-    status: json?.status ?? "unknown",
-  };
+    status: json?.status ?? 'unknown',
+  }
 }
 
 async function pollEndpoints() {
   for (const endpoint of endpoints) {
     try {
-      const res = await fetch(endpoint.host);
-      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      const res = await fetch(endpoint.host)
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`)
 
-      const json = await res.json();
-      const point = extractMetrics(json, endpoint.region);
-      updateRegionStats(endpoint.region, point);
+      const json = await res.json()
+      const point = extractMetrics(json, endpoint.region)
+      updateRegionStats(endpoint.region, point)
     } catch (err) {
-      console.error(`Failed to fetch ${endpoint.region}:`, err);
+      console.error(`Failed to fetch ${endpoint.region}:`, err)
       updateRegionStats(endpoint.region, {
         timestamp: new Date().toISOString(),
         region: endpoint.region,
@@ -88,27 +111,27 @@ async function pollEndpoints() {
         timers: 0,
         redisUp: false,
         databaseUp: false,
-        status: "error",
-      });
+        status: 'error',
+      })
     }
   }
 
-  const message = JSON.stringify({ type: "update", regions });
-  wss.clients.forEach(client => {
+  const message = JSON.stringify({ type: 'update', regions })
+  wss.clients.forEach((client) => {
     if (client.readyState === client.OPEN) {
-      client.send(message);
+      client.send(message)
     }
-  });
+  })
 }
 
-setInterval(pollEndpoints, 15000);
-pollEndpoints();
+setInterval(pollEndpoints, 15000)
+pollEndpoints()
 
-wss.on("connection", ws => {
-  console.log("Client connected");
-  ws.send(JSON.stringify({ type: "initial", regions }));
+wss.on('connection', (ws) => {
+  console.log('Client connected')
+  ws.send(JSON.stringify({ type: 'initial', regions }))
 
-  ws.on("close", () => {
-    console.log("Client disconnected");
-  });
-});
+  ws.on('close', () => {
+    console.log('Client disconnected')
+  })
+})

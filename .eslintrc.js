@@ -5,11 +5,11 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   rules: {
-    'prettier/prettier': 'error'
-  }
+    'prettier/prettier': 'error',
+  },
 }
 // This ESLint configuration is set up for a TypeScript project with Prettier integration.
 // It extends recommended rules from ESLint and TypeScript, and enforces Prettier formatting

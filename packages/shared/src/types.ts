@@ -13,7 +13,7 @@ export interface EndpointData {
 }
 
 export interface DataContextType {
-  data: Record<string, EndpointData | null>  
+  data: Record<string, EndpointData | null>
   connected: boolean
 }
 
@@ -66,34 +66,32 @@ export interface EndpointDataDetailed {
 }
 
 export interface DataPoint {
-  timestamp: string; // ISO string
-  latency: number; // ms
-  successRate: number; // percentage 0-100
-  errorCount: number; // count of errors
+  timestamp: string // ISO string
+  latency: number // ms
+  successRate: number // percentage 0-100
+  errorCount: number // count of errors
 }
 
 export interface RegionStats {
-  region: string;
-  dataPoints: DataPoint[];
+  region: string
+  dataPoints: DataPoint[]
 }
 
 interface RegionSummary {
-  region: string;
-  status: string;
+  region: string
+  status: string
   services: {
-    redis: boolean;
-    database: boolean;
-  };
-  serversCount: number;
-  onlineUsers: number;
-  sessions: number;
-  cpuLoad: number;          // from stats.server.cpu_load
-  waitTime: number;         // from stats.server.wait_time
-  activeConnections: number;// from stats.server.active_connections
-  timers: number;           // from stats.server.timers
-  lastUpdated: string;
+    redis: boolean
+    database: boolean
+  }
+  serversCount: number
+  onlineUsers: number
+  sessions: number
+  cpuLoad: number // from stats.server.cpu_load
+  waitTime: number // from stats.server.wait_time
+  activeConnections: number // from stats.server.active_connections
+  timers: number // from stats.server.timers
+  lastUpdated: string
 }
-
-
 
 export type EndpointsDataMap = Record<string, EndpointDataDetailed | null>

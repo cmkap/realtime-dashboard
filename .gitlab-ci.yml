@@ -26,7 +26,6 @@ format:
   only:
     - merge_requests
     - /^feature\/.*$/
-
 # tests:
 #   stage: test
 #   image: node:18

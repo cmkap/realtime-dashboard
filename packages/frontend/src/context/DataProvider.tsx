@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { DataContext } from './DataContext'
 import type { RegionStats } from '@realtime/shared'
 
-export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [regions, setRegions] = useState<RegionStats[]>([])
   const [connected, setConnected] = useState(false)
 
@@ -25,5 +27,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => ws.close()
   }, [])
 
-  return <DataContext.Provider value={{ regions, connected }}>{children}</DataContext.Provider>
+  return (
+    <DataContext.Provider value={{ regions, connected }}>
+      {children}
+    </DataContext.Provider>
+  )
 }
