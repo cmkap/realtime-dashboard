@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev-frontend": "pnpm --filter frontend dev",
-  "build-frontend": "pnpm --filter frontend build",
-  "lint-frontend": "pnpm --filter frontend lint",
-  "preview-frontend": "pnpm --filter frontend preview",
-  "start-backend": "pnpm --filter backend start",
-  "build-backend": "pnpm --filter backend build",
-  "lint": "pnpm -w -r run lint"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-frontend": "pnpm --filter frontend dev",
+    "build-frontend": "pnpm --filter frontend build",
+    "lint-frontend": "pnpm --filter frontend lint",
+    "preview-frontend": "pnpm --filter frontend preview",
+    "start-backend": "pnpm --filter backend start",
+    "build-backend": "pnpm --filter backend build",
+    "lint": "pnpm -w -r run lint"
   },
   "keywords": [],
   "author": "",
