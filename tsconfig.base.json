@@ -6,6 +6,11 @@
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@realtime/shared": ["packages/shared/src"],
+      "@realtime/shared/*": ["packages/shared/src/*"]
+    }
   }
 }
