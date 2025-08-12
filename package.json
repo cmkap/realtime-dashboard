@@ -9,7 +9,8 @@
     "lint-frontend": "pnpm --filter frontend lint",
     "preview-frontend": "pnpm --filter frontend preview",
     "start-backend": "pnpm --filter backend start",
-    "build-backend": "pnpm --filter backend build"
+    "build-backend": "pnpm --filter backend build",
+    "lint": "pnpm -w -r run lint"
   },
   "keywords": [],
   "author": "",

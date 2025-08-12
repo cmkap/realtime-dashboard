@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@realtime/shared": "workspace:*",
+    "lucide-react": "^0.539.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "@realtime/shared": "workspace:*"
+    "recharts": "^3.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

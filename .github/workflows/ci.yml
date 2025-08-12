@@ -1,0 +1,61 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run lint
+        run: pnpm run lint
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check formatting with Prettier
+        run: pnpm exec prettier --check .
+#  deploy:
+#    needs: [lint, format]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Use Node.js 18
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 18
+#      - name: Install pnpm
+#        run: npm install -g pnpm
+#      - name: Install dependencies
+#        run: pnpm install --frozen-lockfile
+#      - name: Build project
+#        run: pnpm run build
+#      - name: Deploy to server
+#        run: |
+#          echo "Add your deployment script/commands here"
