@@ -1,14 +1,11 @@
-import './App.css'
+import React from "react";
+import { DataProvider } from "./context/DataContext";
+import { StatusDashboard } from "./components/StatusDashboard";
 
-function App() {
-
+export default function App() {
   return (
-   <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-      <h1 className="text-white text-5xl font-extrabold">
-        Tailwind + Vite is working!
-      </h1>
-    </div>
-  )
+    <DataProvider>
+      <StatusDashboard />
+    </DataProvider>
+  );
 }
-
-export default App
