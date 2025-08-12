@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-frontend": "pnpm --filter frontend dev",
+    "build-frontend": "pnpm --filter frontend build",
+    "lint-frontend": "pnpm --filter frontend lint",
+    "preview-frontend": "pnpm --filter frontend preview",
+    "start-backend": "pnpm --filter backend start",
+    "build-backend": "pnpm --filter backend build"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +20,9 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node-fetch": "^2.6.13",
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
     "autoprefixer": "^10.4.21",
