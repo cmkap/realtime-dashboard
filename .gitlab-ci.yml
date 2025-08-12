@@ -1,0 +1,46 @@
+stages:
+  - lint
+  - format
+  # - test
+  # - deploy
+
+variables:
+  NODE_ENV: development
+
+lint:
+  stage: lint
+  image: node:18
+  script:
+    - npm ci
+    - npm run lint
+  only:
+    - merge_requests
+    - /^feature\/.*$/
+
+format:
+  stage: format
+  image: node:18
+  script:
+    - npm ci
+    - npx prettier --check .
+  only:
+    - merge_requests
+    - /^feature\/.*$/
+
+# tests:
+#   stage: test
+#   image: node:18
+#   script:
+#     - npm ci
+#     - npm test
+#   only:
+#     - merge_requests
+#     - /^feature\/.*$/
+
+# deploy:
+#   stage: deploy
+#   image: node:18
+#   script:
+#     - echo "Deploy script here"
+#   only:
+#     - main
