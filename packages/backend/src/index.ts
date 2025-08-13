@@ -9,12 +9,30 @@ const HOST = process.env.HOST || '0.0.0.0' // Bind to 0.0.0.0 on Render
 
 // Endpoint list
 const endpoints = [
-  { host: 'https://data--us-east.upscope.io/status?stats=1', region: 'us-east' },
-  { host: 'https://data--eu-west.upscope.io/status?stats=1', region: 'eu-west' },
-  { host: 'https://data--eu-central.upscope.io/status?stats=1', region: 'eu-central' },
-  { host: 'https://data--us-west.upscope.io/status?stats=1', region: 'us-west' },
-  { host: 'https://data--sa-east.upscope.io/status?stats=1', region: 'sa-east' },
-  { host: 'https://data--ap-southeast.upscope.io/status?stats=1', region: 'ap-southeast' },
+  {
+    host: 'https://data--us-east.upscope.io/status?stats=1',
+    region: 'us-east',
+  },
+  {
+    host: 'https://data--eu-west.upscope.io/status?stats=1',
+    region: 'eu-west',
+  },
+  {
+    host: 'https://data--eu-central.upscope.io/status?stats=1',
+    region: 'eu-central',
+  },
+  {
+    host: 'https://data--us-west.upscope.io/status?stats=1',
+    region: 'us-west',
+  },
+  {
+    host: 'https://data--sa-east.upscope.io/status?stats=1',
+    region: 'sa-east',
+  },
+  {
+    host: 'https://data--ap-southeast.upscope.io/status?stats=1',
+    region: 'ap-southeast',
+  },
 ]
 
 const regions: RegionStats[] = []
@@ -24,14 +42,19 @@ function calculateSummary(dataPoints: ExtendedDataPoint[]) {
   return {
     avgCpuLoad: dataPoints.reduce((sum, p) => sum + p.cpuLoad, 0) / count,
     avgWaitTime: dataPoints.reduce((sum, p) => sum + p.waitTime, 0) / count,
-    avgActiveConnections: dataPoints.reduce((sum, p) => sum + p.activeConnections, 0) / count,
+    avgActiveConnections:
+      dataPoints.reduce((sum, p) => sum + p.activeConnections, 0) / count,
   }
 }
 
 function updateRegionStats(region: string, point: ExtendedDataPoint) {
-  let regionEntry = regions.find(r => r.region === region)
+  let regionEntry = regions.find((r) => r.region === region)
   if (!regionEntry) {
-    regionEntry = { region, dataPoints: [], summary: { avgCpuLoad: 0, avgWaitTime: 0, avgActiveConnections: 0 } }
+    regionEntry = {
+      region,
+      dataPoints: [],
+      summary: { avgCpuLoad: 0, avgWaitTime: 0, avgActiveConnections: 0 },
+    }
     regions.push(regionEntry)
   }
 
@@ -90,7 +113,7 @@ async function pollEndpoints() {
   }
 
   const message = JSON.stringify({ type: 'update', regions })
-  wss.clients.forEach(client => {
+  wss.clients.forEach((client) => {
     if (client.readyState === client.OPEN) client.send(message)
   })
 }
@@ -98,7 +121,7 @@ async function pollEndpoints() {
 setInterval(pollEndpoints, 15000)
 pollEndpoints()
 
-wss.on('connection', ws => {
+wss.on('connection', (ws) => {
   console.log('Client connected')
   ws.send(JSON.stringify({ type: 'initial', regions }))
   ws.on('close', () => console.log('Client disconnected'))
