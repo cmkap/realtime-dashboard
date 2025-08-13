@@ -5,7 +5,7 @@ import type { ExtendedDataPoint, RegionStats } from '@realtime/shared'
 
 const app = express()
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
-const HOST = process.env.HOST || '0.0.0.0' 
+const HOST = process.env.HOST || '0.0.0.0'
 
 app.get('/', (req, res) => {
   res.send('Backend is running 🚀')

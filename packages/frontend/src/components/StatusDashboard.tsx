@@ -69,7 +69,6 @@ export const StatusDashboard: React.FC = () => {
         </header>
 
         <main className="grid gap-8 md:grid-cols-2">
-          {/* Overview */}
           <section className="bg-white rounded-3xl p-6 shadow-lg flex flex-col gap-6">
             <h2 className="text-xl font-semibold">Overview</h2>
             <div className="flex flex-col gap-4">
