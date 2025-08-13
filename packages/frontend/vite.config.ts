@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0', // expose to network
-    port: Number(process.env.PORT) || 4173, // Render will provide PORT
+    port: Number(process.env.PORT) || 4173, 
+    allowedHosts: ['realtime-frontend-boop.onrender.com'] 
   },
   preview: {
     host: '0.0.0.0',
