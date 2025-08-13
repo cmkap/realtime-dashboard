@@ -7,6 +7,10 @@ const app = express()
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 const HOST = process.env.HOST || '0.0.0.0' // Bind to 0.0.0.0 on Render
 
+app.get('/', (req, res) => {
+  res.send('Backend is running 🚀')
+})
+
 // Endpoint list
 const endpoints = [
   {
