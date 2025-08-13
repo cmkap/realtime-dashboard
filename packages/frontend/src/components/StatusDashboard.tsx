@@ -117,18 +117,22 @@ export const StatusDashboard: React.FC = () => {
                   <Metric
                     label="Avg CPU Load"
                     value={
-                      (selectedRegion.summary.avgCpuLoad * 100).toFixed(1) + '%'
+                      ((selectedRegion.summary?.avgCpuLoad ?? 0) * 100).toFixed(
+                        1,
+                      ) + '%'
                     }
                   />
                   <Metric
                     label="Avg Wait (ms)"
-                    value={selectedRegion.summary.avgWaitTime.toFixed(0)}
+                    value={(selectedRegion.summary?.avgWaitTime ?? 0).toFixed(
+                      0,
+                    )}
                   />
                   <Metric
                     label="Avg Connections"
-                    value={selectedRegion.summary.avgActiveConnections.toFixed(
-                      0,
-                    )}
+                    value={(
+                      selectedRegion.summary?.avgActiveConnections ?? 0
+                    ).toFixed(0)}
                   />
                   <Metric
                     label="Latest Timestamp"
