@@ -176,7 +176,15 @@ pnpm --filter frontend dev
 
 ---
 
-## Deployment
+## 🌍 Deployment & Access
+
+The project is deployed using **Render** for both the frontend and backend:  
+
+- **Live Production (Frontend)**: [https://realtime-frontend-boop.onrender.com](https://realtime-frontend-boop.onrender.com)  
+- **Live Production (Backend)**: [https://realtime-backend-q1uf.onrender.com](https://realtime-backend-q1uf.onrender.com)  
+
+> Both services spin down when unused and may take up to **1 minute** to start when first accessed.  
+> The backend and frontend must be running simultaneously for the application to function correctly.
 
 **Backend**
 
@@ -206,9 +214,22 @@ pnpm install --frozen-lockfile && pnpm --filter frontend build
 
 ```env
 VITE_WS_URL=<your-backend-live-url>
-```
+```  
 
 ---
+
+## 🚀 Future Improvements
+
+While the current implementation meets the requirements, there are several enhancements I would consider for future iterations:
+
+- **Automated Swagger documentation** — Auto-generate API docs from Zod/OpenAPI schemas to ensure they are always up to date.  
+- **Advanced logging & monitoring** — Use structured logging (e.g., Winston, Pino) with log levels, persistent log storage, and potential integration with monitoring tools like Grafana or Datadog.  
+- **Data persistence** — Store relevant WebSocket data in a database (e.g., PostgreSQL) so clients can retrieve historical updates and reconnect seamlessly.  
+- **Caching layer** — Use in-memory caching (e.g., Redis) to reduce redundant API calls and improve response times.  
+- **Backend modularisation** — Further refactor into feature-based modules to improve maintainability and scalability.  
+- **Expanded testing** — Add more unit, integration, and end-to-end tests to validate the entire data flow.  
+- **CI/CD enhancements** — Extend the current pipeline to include automated deployments, smoke tests, and staging environments for production readiness.  
+
 
 ## License
 
