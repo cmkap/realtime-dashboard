@@ -12,20 +12,24 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [regions, setRegions] = useState<RegionStats[]>([])
   const [connected, setConnected] = useState(false)
 
+  // Use VITE_WS_URL if defined, otherwise fallback to localhost dev port
+  const WS_URL = import.meta.env.VITE_WS_URL
+    ? import.meta.env.VITE_WS_URL
+    : `ws://localhost:${import.meta.env.VITE_DEV_PORT || 3000}`
+
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3000')
+    const ws = new WebSocket(WS_URL)
 
     ws.onopen = () => {
-      console.log('WS connected')
+      console.log(`WebSocket connected to ${WS_URL}`)
       setConnected(true)
     }
 
     ws.onmessage = (event) => {
       try {
-        const msg = JSON.parse(event.data)
-        // backend sends { type: "initial" | "update", regions: RegionStats[] }
-        if (msg.type === 'initial' || msg.type === 'update') {
-          setRegions(msg.regions ?? [])
+        const message = JSON.parse(event.data)
+        if (message.type === 'initial' || message.type === 'update') {
+          setRegions(message.regions ?? [])
         }
       } catch (err) {
         console.error('Invalid WS message', err)
@@ -33,16 +37,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     ws.onclose = () => {
-      console.log('WS closed')
+      console.log('WebSocket closed')
       setConnected(false)
     }
+
     ws.onerror = (err) => {
-      console.error('WS error', err)
+      console.error('WebSocket error', err)
       setConnected(false)
     }
 
     return () => ws.close()
-  }, [])
+  }, [WS_URL]) // re-create if WS_URL changes (rare in prod)
 
   return (
     <DataContext.Provider value={{ regions, connected }}>
