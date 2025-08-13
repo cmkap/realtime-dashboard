@@ -1,10 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import type { RegionStats } from '@realtime/shared'
-
-export interface DataContextType {
-  regions: RegionStats[]
-  connected: boolean
-}
+import type { DataContextType, RegionStats } from '@realtime/shared'
 
 export const DataContext = createContext<DataContextType>({
   regions: [],
