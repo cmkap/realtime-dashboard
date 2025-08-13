@@ -213,4 +213,3 @@ VITE_WS_URL=<your-backend-live-url>
 ## License
 
 MIT © Your Name
-
