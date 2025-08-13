@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts'
-import type { RegionStats } from '@realtime/shared'
 
 const formatTime = (iso?: string) => {
   if (!iso) return ''

@@ -12,8 +12,13 @@ export interface EndpointData {
   stats: EndpointStats
 }
 
+// export interface DataContextType {
+//   data: Record<string, EndpointData | null>
+//   connected: boolean
+// }
+
 export interface DataContextType {
-  data: Record<string, EndpointData | null>
+  regions: RegionStats[]
   connected: boolean
 }
 
@@ -72,10 +77,47 @@ export interface DataPoint {
   errorCount: number // count of errors
 }
 
+export interface ExtendedDataPoint {
+  timestamp: string
+  region: string
+  cpuLoad: number
+  waitTime: number
+  activeConnections: number
+  onlineUsers: number
+  sessions: number
+  timers: number
+  redisUp: boolean
+  databaseUp: boolean
+  status: string
+}
+
+// export interface ExtendedDataPoint extends DataPoint {
+//   region: string;
+//   cpuLoad: number;
+//   waitTime: number;
+//   activeConnections: number;
+//   onlineUsers: number;
+//   sessions: number;
+//   timers: number;
+//   redisUp: boolean;
+//   databaseUp: boolean;
+//   status: string;
+// }
+
 export interface RegionStats {
   region: string
-  dataPoints: DataPoint[]
+  dataPoints: ExtendedDataPoint[]
+  summary?: {
+    avgCpuLoad: number
+    avgWaitTime: number
+    avgActiveConnections: number
+  }
 }
+
+// export interface RegionStats {
+//   region: string
+//   dataPoints: DataPoint[]
+// }
 
 interface RegionSummary {
   region: string

@@ -11,7 +11,7 @@ export interface EndpointData {
   stats: EndpointStats
 }
 export interface DataContextType {
-  data: Record<string, EndpointData | null>
+  regions: RegionStats[]
   connected: boolean
 }
 export interface WorkerDetail {
@@ -55,9 +55,13 @@ export interface EndpointDataDetailed {
   server_issue: string | null
   version: string
 }
-// @realtime/shared/types.d.ts
-
 export interface DataPoint {
+  timestamp: string
+  latency: number
+  successRate: number
+  errorCount: number
+}
+export interface ExtendedDataPoint {
   timestamp: string
   region: string
   cpuLoad: number
@@ -70,32 +74,13 @@ export interface DataPoint {
   databaseUp: boolean
   status: string
 }
-
 export interface RegionStats {
   region: string
-  dataPoints: DataPoint[]
-  summary: {
+  dataPoints: ExtendedDataPoint[]
+  summary?: {
     avgCpuLoad: number
     avgWaitTime: number
     avgActiveConnections: number
   }
 }
-
-export interface RegionSummary {
-  region: string
-  status: string
-  services: {
-    redis: boolean
-    database: boolean
-  }
-  serversCount: number
-  onlineUsers: number
-  sessions: number
-  cpuLoad: number
-  waitTime: number
-  activeConnections: number
-  timers: number
-  lastUpdated: string
-}
-
 export type EndpointsDataMap = Record<string, EndpointDataDetailed | null>

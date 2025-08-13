@@ -1,7 +1,7 @@
 import express from 'express'
 import { WebSocketServer } from 'ws'
 import fetch from 'node-fetch'
-import type { DataPoint, RegionStats } from '@realtime/shared'
+import type { ExtendedDataPoint, RegionStats } from '@realtime/shared'
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -35,7 +35,7 @@ const endpoints = [
 
 const regions: RegionStats[] = []
 
-function calculateSummary(dataPoints: DataPoint[]) {
+function calculateSummary(dataPoints: ExtendedDataPoint[]) {
   const count = dataPoints.length || 1
   return {
     avgCpuLoad: dataPoints.reduce((sum, p) => sum + p.cpuLoad, 0) / count,
@@ -45,7 +45,7 @@ function calculateSummary(dataPoints: DataPoint[]) {
   }
 }
 
-function updateRegionStats(region: string, point: DataPoint) {
+function updateRegionStats(region: string, point: ExtendedDataPoint) {
   let regionEntry = regions.find((r) => r.region === region)
   if (!regionEntry) {
     regionEntry = {
@@ -71,7 +71,7 @@ const server = app.listen(port, () => {
 
 const wss = new WebSocketServer({ server })
 
-function extractMetrics(json: any, region: string): DataPoint {
+function extractMetrics(json: any, region: string): ExtendedDataPoint {
   const now = new Date().toISOString()
 
   return {
